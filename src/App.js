@@ -2,12 +2,22 @@ import React, { useState,useEffect } from 'react'
 import './App.css';
 import { FormControl,Button,InputLabel,Input } from '@material-ui/core';
 import Message from './Components/Message';
+import db from './Components/Firebase';
 
 function App() {
   let [input, setInput] = useState('');
-  let [messages, setMessages] = useState([{username:'main',text:'dog hai tu'},{username:'tum',text:'tum ho paas mere '},{username:'rana ji',text:'rana ji hai tu'}]);
+  let [messages, setMessages] = useState([]);
   let [username,setUsername] = useState('');
 
+
+
+  useEffect(()=>{
+    //run only once when app component loads
+    db.collection('messages').onSnapshot((snapshot)=>{
+      // console.log(snapshot.docs);
+      setMessages(snapshot.docs.map(doc=>doc.data()));
+    })
+  },[]);
   useEffect(()=>{
     setUsername(prompt("Enter your name"))
   },[])
@@ -16,7 +26,7 @@ function App() {
     e.preventDefault();
     //logic to send the message
     if (input != '') {
-      setMessages([...messages, {username:username,text:input}]);
+      setMessages([...messages, {username:username,message:input}]);
       setInput('');
     }
   }
@@ -38,7 +48,7 @@ function App() {
       {
         messages.map(message => (
           // <p>{message}</p>
-          <Message username={message.username} text={message.text}/>
+          <Message username={username} message={message}/>
         ))
       }
     </div>
