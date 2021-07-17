@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import './App.css';
-import { FormControl, Button, InputLabel, Input } from '@material-ui/core';
+import { FormControl, Button, InputLabel, Input,IconButton } from '@material-ui/core';
 import Message from './Components/Message';
 import db from './Components/Firebase';
 import firebase from 'firebase';
-import FlipMove from 'react-flip-move'
+import FlipMove from 'react-flip-move';
+import SendIcon from '@material-ui/icons/Send';
 
 function App() {
   let [input, setInput] = useState('');
@@ -42,10 +43,12 @@ function App() {
       <img src="https://en.facebookbrand.com/wp-content/uploads/2018/09/Header-e1538151782912.png?w=100&h=100" alt="facebook" />
       <h2>Welcome {username}</h2>
       <form className='app__form'>
-        <FormControl>
-          <InputLabel >Enter a message 💌</InputLabel>
-          <Input value={input} onChange={e => setInput(e.target.value)} type="text" />
-          <Button disabled={!input} variant="contained" color="primary" type='submit' onClick={sendMessage} varient="outlined" >Send Message</Button>
+        <FormControl className='app__formControl'>
+          {/* <InputLabel ></InputLabel> */}
+          <Input className='app__input' placeholder='Enter a Message...' value={input} onChange={e => setInput(e.target.value)} type="text" />
+          <IconButton  className='app__iconButton' disabled={!input} variant="contained" color="primary" type='submit' onClick={sendMessage} varient="outlined">
+            <SendIcon/>
+          </IconButton>
         </FormControl>
       </form>
       <FlipMove>
